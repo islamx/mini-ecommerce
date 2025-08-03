@@ -2,6 +2,11 @@ import mongoose, { Schema, models, model } from "mongoose";
 
 const ProductSchema = new Schema(
   {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
     title: {
       type: String,
       required: [true, "Title is required"],
@@ -30,5 +35,4 @@ const ProductSchema = new Schema(
   }
 );
 
-// 👇 Avoid model overwrite error in Next.js (hot-reload issue)
 export const Product = models.Product || model("Product", ProductSchema);
