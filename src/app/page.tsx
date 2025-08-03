@@ -1,8 +1,14 @@
+import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/products/ProductCard";
 import { getProducts } from "@/lib/products";
 
-async function HomePage() {
-  const products = await getProducts();
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams?: { page?: string };
+}) {
+  const currentPage = parseInt(searchParams?.page || "1");
+  const { data: products, pagination } = await getProducts(currentPage);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 relative overflow-hidden">
@@ -21,11 +27,13 @@ async function HomePage() {
             </h1>
 
             {/* Product Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {products.map((product, index) => (
-                <div key={product._id} className={index === 4 ? "lg:col-span-2" : ""}>
+                <div
+                  key={product._id}
+                  className={index === 4 ? "lg:col-span-2" : ""}
+                >
                   <ProductCard
-                    key={product._id}
                     id={product._id}
                     title={product.title}
                     description={product.description}
@@ -36,11 +44,13 @@ async function HomePage() {
                 </div>
               ))}
             </div>
+            <Pagination
+              currentPage={pagination.page}
+              totalPages={pagination.totalPages}
+            />
           </div>
         </div>
       </div>
     </main>
   );
 }
-
-export default HomePage;
