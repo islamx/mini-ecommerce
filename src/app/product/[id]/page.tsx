@@ -11,12 +11,12 @@ async function getProduct(id: string): Promise<Product> {
   return res.json();
 }
 
-type Props = {
-  params: { id: string };
+type ProductDetailPageProps = {
+  params: Promise<{ id: string }>;
 };
 
-export default async function ProductDetailPage(props: Props) {
-  const id = props.params.id;
+export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
+  const { id } = await params;
   const product = await getProduct(id);
 
   return (
