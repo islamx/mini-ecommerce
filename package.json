@@ -10,6 +10,7 @@
     "seed": "tsx -r dotenv/config -r tsconfig-paths/register scripts/seed.ts"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.7",
     "dotenv": "^17.2.1",
     "lucide-react": "^0.536.0",
     "mongoose": "^8.17.0",

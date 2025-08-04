@@ -28,3 +28,13 @@ export async function getProducts({
 
   return res.json();
 }
+
+export async function deleteProduct(id: number): Promise<{ message: string }> {
+  const res = await fetch(`/api/products/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) throw new Error("Failed to delete product");
+
+  return res.json();
+}
