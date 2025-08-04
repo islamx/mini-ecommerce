@@ -6,6 +6,7 @@ import Link from "next/link";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 import Button from "@/components/forms/Button";
 import CheckoutThanks from "@/components/products/CheckoutThanks";
+import EmptyState from "@/components/shared/EmptyState";
 import { useEffect } from "react";
 
 export default function CartPage() {
@@ -39,13 +40,21 @@ export default function CartPage() {
         {!hasCheckedOut && <Breadcrumb currentPage="Cart" />}
         
         <div className="bg-white shadow-lg p-6 rounded-lg">
-          {!hasCheckedOut && <h1 className="text-3xl font-bold mb-8 text-gray-800">Your Cart</h1>}
+          {!hasCheckedOut && cart.length > 0 && <h1 className="text-3xl font-bold mb-8 text-gray-800">Your Cart</h1>}
 
         {cart.length === 0 ? (
           hasCheckedOut ? (
             <CheckoutThanks />
           ) : (
-            <p className="text-gray-600 text-center">Your cart is empty. <Link href="/" className="text-orange-500 underline">Continue Shopping</Link></p>
+            <EmptyState
+              title="Your cart is empty"
+              description="Looks like you haven't added any products to your cart yet. Start shopping to see some amazing products!"
+              icon="cart"
+              primaryAction={{
+                label: "Start Shopping",
+                href: "/"
+              }}
+            />
           )
         ) : (
           <>

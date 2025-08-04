@@ -6,6 +6,7 @@ import Pagination from "@/components/shared/Pagination";
 import ProductCard from "@/components/products/ProductCard";
 import LoadingContainer from "@/components/shared/LoadingContainer";
 import ProductFilter from "@/components/products/ProductFilter";
+import EmptyState from "@/components/shared/EmptyState";
 import { getProducts, getProductCount } from "@/lib/products";
 import { Product } from "@/types/Product";
 import { notFound } from "next/navigation";
@@ -104,6 +105,10 @@ export default function HomePageContent() {
     fetchData();
   }, []);
 
+  // Check if there are search/filter parameters
+  const hasSearchParams = searchParams.get("name") || searchParams.get("category") || searchParams.get("minPrice") || searchParams.get("maxPrice");
+  const searchQuery = searchParams.get("name");
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 relative overflow-hidden">
       <div className="absolute inset-0 opacity-20">
@@ -150,6 +155,30 @@ export default function HomePageContent() {
 
             {loading ? (
               <LoadingContainer text="Loading products..." />
+            ) : products.length === 0 && hasSearchParams ? (
+              <EmptyState
+                title="No products found"
+                description={`We couldn't find any products matching "${searchQuery || 'your search criteria'}". Try adjusting your search terms or browse our full collection.`}
+                icon="search"
+                primaryAction={{
+                  label: "Browse All Products",
+                  href: "/"
+                }}
+                secondaryAction={{
+                  label: "Go Back",
+                  onClick: () => window.history.back()
+                }}
+              />
+            ) : products.length === 0 ? (
+              <EmptyState
+                title="No products available"
+                description="We're currently updating our product collection. Please check back later for new arrivals."
+                icon="products"
+                primaryAction={{
+                  label: "Refresh Page",
+                  href: "/"
+                }}
+              />
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {products.map((product, index) => (
@@ -163,7 +192,7 @@ export default function HomePageContent() {
               </div>
             )}
 
-            <Pagination currentPage={currentPage} totalPages={totalPages} />
+            {products.length > 0 && <Pagination currentPage={currentPage} totalPages={totalPages} />}
           </div>
         </div>
       </div>

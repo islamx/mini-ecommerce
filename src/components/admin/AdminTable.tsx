@@ -7,13 +7,17 @@ import { toast } from "react-hot-toast";
 import { deleteProduct } from "@/lib/products";
 import { useState } from "react";
 import ConfirmDeleteModal from "../shared/ConfirmDeleteModal";
-import AdminFilter from "./AdminFilter";
 import Button from "../forms/Button";
 
-export default function AdminTable({ products }: { products: Product[] }) {
+interface AdminTableProps {
+  products: Product[];
+  search: string;
+  onSearchChange: (value: string) => void;
+}
+
+export default function AdminTable({ products, search, onSearchChange }: AdminTableProps) {
   const router = useRouter();
   const [data, setData] = useState(products);
-  const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   const handleDeleteConfirmed = async () => {
@@ -35,11 +39,6 @@ export default function AdminTable({ products }: { products: Product[] }) {
 
   return (
     <>
-      <AdminFilter 
-        search={search}
-        onSearchChange={setSearch}
-      />
-
       <div className="overflow-x-auto rounded-lg bg-white shadow-lg border border-gray-200">
         <table className="min-w-full text-sm text-gray-700">
           <thead className="bg-gradient-to-r from-orange-50 to-orange-100 text-gray-800 uppercase text-xs font-semibold">
