@@ -58,13 +58,14 @@ export default function ConfirmDeleteModal({
                 </Dialog.Description>
 
                 <div className="mt-6 flex justify-center gap-4 w-full">
-                  <button
+                  <Button
+                    variant="secondary"
                     onClick={onClose}
-                    className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-800 transition-all"
                   >
                     Cancel
-                  </button>
+                  </Button>
                   <Button
+                    variant="danger"
                     onClick={() => {
                       onConfirm();
                       onClose();

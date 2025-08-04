@@ -91,11 +91,10 @@ export default function ProductDetailPage() {
         <div className="bg-white shadow-lg rounded-lg overflow-hidden md:flex">
         {/* Image */}
         <div className="relative w-full md:w-1/2 h-64 md:h-auto">
-          <Image
+          <img
             src={product.imageUrl}
             alt={product.title}
-            fill
-            className="object-cover"
+            className="object-cover w-full h-full"
             loading="lazy"
           />
         </div>
@@ -111,13 +110,15 @@ export default function ProductDetailPage() {
             <p className="text-sm text-gray-500">Category: {product.category}</p>
           )}
           <Button
+            variant="primary"
+            size="lg"
             onClick={() => handleAddToCart({
               id: product.id,
               title: product.title,
               price: product.price,
               imageUrl: product.imageUrl,
             })}
-            className="mt-auto bg-[#F4D8B4] hover:bg-[#E8C8A0] text-gray-800 font-semibold py-3 px-6"
+            className="mt-auto"
           >
             ADD TO CART
           </Button>

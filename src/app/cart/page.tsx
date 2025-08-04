@@ -4,6 +4,7 @@ import { useCartStore } from "@/store/cartStore";
 import Image from "next/image";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import Button from "@/components/forms/Button";
 
 export default function CartPage() {
   const {
@@ -31,63 +32,71 @@ export default function CartPage() {
           <>
             <div className="space-y-6">
               {cart.map((item) => (
-                <div key={item.id} className="flex items-center gap-6 border-b pb-6">
+                <div key={item.id} className="flex items-center gap-6 border-b pb-6 relative">
                   <div className="relative w-24 h-24">
-                    <Image
+                    <img
                       src={item.imageUrl}
                       alt={item.title}
-                      fill
-                      className="object-cover rounded"
+                      className="object-cover rounded w-full h-full"
                     />
                   </div>
                   <div className="flex-1">
                     <h2 className="font-semibold text-gray-800">{item.title}</h2>
                     <p className="text-gray-600">{item.price.toLocaleString()} €</p>
                     <div className="flex items-center mt-2 gap-3">
-                      <button
+                      <Button
+                        variant="secondary"
+                        size="sm"
                         onClick={() => decreaseQuantity(item.id)}
-                        className="px-3 py-1 bg-gray-200"
                       >
                         -
-                      </button>
+                      </Button>
                       <span className="font-semibold">{item.quantity}</span>
-                      <button
+                      <Button
+                        variant="secondary"
+                        size="sm"
                         onClick={() => increaseQuantity(item.id)}
-                        className="px-3 py-1 bg-gray-200"
                       >
                         +
-                      </button>
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="text-red-500 ml-4"
-                      >
-                        Remove
-                      </button>
+                      </Button>
                     </div>
                   </div>
+                  <button
+                    onClick={() => removeFromCart(item.id)}
+                    className="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-lg font-bold transition-colors duration-200 px-2 py-1 rounded hover:bg-gray-100"
+                    title="Remove item"
+                  >
+                    ×
+                  </button>
                 </div>
               ))}
             </div>
 
-            <div className="mt-10 flex justify-between items-center">
+                        <div className="mt-10 flex justify-between items-end">
               <div>
-                <button
+                <Button
+                  variant="secondary"
+                  size="sm"
                   onClick={clearCart}
-                  className="text-sm text-red-600 underline"
+                  className="bg-gray-100 text-gray-600 hover:bg-gray-200"
                 >
                   Clear Cart
-                </button>
+                </Button>
               </div>
 
               <div className="text-right">
                 <p className="text-xl font-bold">
                   Total: {total.toLocaleString()} €
                 </p>
-                <button className="mt-3 bg-orange-400 hover:bg-orange-500 text-white px-6 py-2 rounded">
+                <Button 
+                  variant="primary"
+                  size="md"
+                  className="mt-3"
+                >
                   Checkout
-                </button>
+                </Button>
               </div>
-                         </div>
+            </div>
            </>
          )}
          </div>

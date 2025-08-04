@@ -44,21 +44,25 @@ export default function NotFoundPage({
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-orange-600 text-white hover:bg-orange-700 transition-colors font-semibold text-lg"
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={() => window.location.href = "/"}
+              className="inline-flex items-center justify-center gap-2 rounded-none px-6 py-3 text-base font-medium"
             >
               <Home size={20} />
               {primaryButtonText}
-            </Link>
+            </Button>
 
-            <button
+            <Button
+              variant="secondary"
+              size="lg"
               onClick={() => window.history.back()}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors font-semibold text-lg whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-2 rounded-none px-6 py-3 text-base font-medium"
             >
               <ArrowLeft size={20} />
               Go Back
-            </button>
+            </Button>
           </div>
 
           <div className="mt-8 pt-6 border-t border-gray-200">

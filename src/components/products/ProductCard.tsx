@@ -58,8 +58,10 @@ function ProductCard({ id, title, description, imageUrl, price, index = 0 }: Pro
       </Link>
 
       <Button
+        variant="primary"
+        size="lg"
         onClick={() => handleAddToCart({ id, title, price, imageUrl })}
-        className="mt-auto bg-[#F4D8B4] hover:bg-[#E8C8A0] text-gray-800 font-semibold py-3 px-6 text-center"
+        className="mt-auto w-full"
       >
         ADD TO CART
       </Button>

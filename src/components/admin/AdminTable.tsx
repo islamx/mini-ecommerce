@@ -8,6 +8,7 @@ import { deleteProduct } from "@/lib/products";
 import { useState } from "react";
 import ConfirmDeleteModal from "../shared/ConfirmDeleteModal";
 import ProductFilter from "./ProductFilter";
+import Button from "../forms/Button";
 
 export default function AdminTable({ products }: { products: Product[] }) {
   const router = useRouter();
@@ -62,23 +63,27 @@ export default function AdminTable({ products }: { products: Product[] }) {
                   <td className="p-3 whitespace-nowrap">{product.price} E£</td>
                   <td className="p-3 whitespace-nowrap">{product.category || "—"}</td>
                   <td className="p-3 flex items-center gap-3">
-                    <button
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => router.push(`/admin/edit/${product.id}`)}
-                      className="text-blue-600 hover:text-blue-800 flex items-center gap-1"
                       title="Edit"
+                      className="text-blue-600 hover:text-blue-800"
                     >
                       <Pencil size={16} />
                       <span className="hidden sm:inline">Edit</span>
-                    </button>
+                    </Button>
 
-                    <button
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => setSelectedId(product.id)}
-                      className="text-red-600 hover:text-red-800 flex items-center gap-1"
                       title="Delete"
+                      className="text-red-600 hover:text-red-800"
                     >
                       <Trash2 size={16} />
                       <span className="hidden sm:inline">Delete</span>
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               ))

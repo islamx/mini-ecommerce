@@ -146,8 +146,9 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
       <div className="flex items-center gap-4 pt-6 border-t border-gray-200">
         <Button
           type="button"
+          variant="secondary"
           onClick={() => router.push("/admin")}
-          className="flex items-center gap-2 bg-gray-100 text-gray-700 hover:bg-gray-200"
+          className="flex items-center gap-2"
         >
           <ArrowLeft size={16} />
           Cancel
@@ -155,8 +156,9 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
         
         <Button 
           type="submit" 
+          variant="primary"
           disabled={isSubmitting}
-          className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-50"
+          className="flex items-center gap-2"
         >
           <Save size={16} />
           {isSubmitting 

@@ -14,7 +14,7 @@ export default function Breadcrumb({ currentPage, isAdmin = false }: BreadcrumbP
       <nav className="flex items-center gap-3 text-base font-medium">
         <Link 
           href={isAdmin ? "/admin" : "/"} 
-          className="text-orange-600 hover:text-orange-700 transition-colors duration-200 underline decoration-1 underline-offset-2"
+          className="text-orange-600 hover:text-orange-700 transition-colors duration-200"
         >
           {isAdmin ? "Admin" : "Products"}
         </Link>
