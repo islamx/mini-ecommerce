@@ -34,9 +34,35 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const newProduct = await Product.create(body);
+    const { title, description, price, category, imageUrl } = body;
+
+    // Simple validation
+    if (!title || !description || !price || !imageUrl) {
+      return NextResponse.json(
+        { message: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    // Auto-generate ID: last product ID + 1
+    const lastProduct = await Product.findOne().sort({ id: -1 }).limit(1);
+    const nextId = lastProduct ? lastProduct.id + 1 : 1;
+
+    const newProduct = await Product.create({
+      id: nextId,
+      title,
+      description,
+      price,
+      category,
+      imageUrl,
+    });
+
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ message: "Failed to create product" }, { status: 400 });
+    console.error("❌ Failed to create product:", error);
+    return NextResponse.json(
+      { message: "Failed to create product" },
+      { status: 500 }
+    );
   }
 }

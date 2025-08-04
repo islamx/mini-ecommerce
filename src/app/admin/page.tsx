@@ -1,72 +1,43 @@
-import { dbConnect } from "@/lib/dbConnect";
-import { Product } from "@/models/Product";
-import { NextRequest, NextResponse } from "next/server";
+import { getProducts } from "@/lib/products";
+import AdminTable from "@/components/admin/AdminTable";
+import Pagination from "@/components/Pagination";
+import { PlusCircle } from "lucide-react";
+import Link from "next/link";
 
-// GET /api/products/:id
-export async function GET(
-  _request: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
-  await dbConnect();
-  try {
-    const { id } = await context.params;
-    const product = await Product.findOne({ id: Number(id) });
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ page?: string }>;
+}) {
+  const params = await searchParams;
+  const currentPage = parseInt(params?.page || "1");
+  const { data: products, pagination } = await getProducts({
+    page: currentPage,
+    limit: 10,
+    isAdmin: true,
+  });
 
-    if (!product) {
-      return NextResponse.json({ message: "Product not found" }, { status: 404 });
-    }
+  return (
+    <main className="max-w-7xl mx-auto py-10 px-4">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Admin - Product Management</h1>
 
-    return NextResponse.json(product, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
-  }
-}
+        <Link
+          href="/admin/add"
+          className="inline-flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 transition-colors"
+        >
+          <PlusCircle size={18} />
+          <div>Add Product</div>
+        </Link>
+      </div>
 
-// PUT /api/products/:id
-export async function PUT(
-  req: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
-  await dbConnect();
-  try {
-    const { id } = await context.params;
-    const body = await req.json();
+      <AdminTable products={products} />
 
-    const updated = await Product.findOneAndUpdate(
-      { id: Number(id) },
-      body,
-      { new: true } // ← يرجع البيانات بعد التعديل
-    );
-
-    if (!updated) {
-      return NextResponse.json({ message: "Product not found" }, { status: 404 });
-    }
-
-    return NextResponse.json(updated, { status: 200 });
-  } catch (error) {
-    console.error("❌ PUT error:", error);
-    return NextResponse.json({ message: "Failed to update product" }, { status: 500 });
-  }
-}
-
-// DELETE /api/products/:id
-export async function DELETE(
-  _req: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
-  await dbConnect();
-  try {
-    const { id } = await context.params;
-
-    const deleted = await Product.findOneAndDelete({ id: Number(id) });
-
-    if (!deleted) {
-      return NextResponse.json({ message: "Product not found" }, { status: 404 });
-    }
-
-    return NextResponse.json({ message: "Product deleted" }, { status: 200 });
-  } catch (error) {
-    console.error("❌ DELETE error:", error);
-    return NextResponse.json({ message: "Failed to delete product" }, { status: 500 });
-  }
+      <Pagination
+        currentPage={currentPage}
+        totalPages={pagination.totalPages}
+        baseUrl="/admin"
+      />
+    </main>
+  );
 }

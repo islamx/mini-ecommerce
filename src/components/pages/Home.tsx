@@ -21,12 +21,14 @@ export default function HomePageContent() {
 
   useEffect(() => {
     let mounted = true;
-    getProducts(currentPage).then(({ data, pagination }) => {
-      if (mounted) {
-        setProducts(data);
-        setTotalPages(pagination.totalPages);
+    getProducts({ page: currentPage, limit: 7, isAdmin: false }).then(
+      ({ data, pagination }) => {
+        if (mounted) {
+          setProducts(data);
+          setTotalPages(pagination.totalPages);
+        }
       }
-    });
+    );
     return () => {
       mounted = false;
     };

@@ -5,9 +5,10 @@ import Link from "next/link";
 type Props = {
   currentPage: number;
   totalPages: number;
+  baseUrl?: string; 
 };
 
-export default function Pagination({ currentPage, totalPages }: Props) {
+export default function Pagination({ currentPage, totalPages, baseUrl = "/" }: Props) {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const sharedBtnStyles =
@@ -18,7 +19,7 @@ export default function Pagination({ currentPage, totalPages }: Props) {
       {/* Prev Button */}
       {currentPage > 1 ? (
         <Link
-          href={`/?page=${currentPage - 1}`}
+          href={`${baseUrl}?page=${currentPage - 1}`}
           className={`${sharedBtnStyles} bg-[#F4D8B4] text-gray-800 hover:bg-[#E8C8A0]`}
         >
           ← Prev
@@ -35,7 +36,7 @@ export default function Pagination({ currentPage, totalPages }: Props) {
       {pages.map((page) => (
         <Link
           key={page}
-          href={`/?page=${page}`}
+          href={`${baseUrl}?page=${page}`}
           className={`px-4 py-2 rounded font-semibold text-sm border transition-all duration-200 ${
             page === currentPage
               ? "bg-gray-800 text-white"
@@ -49,7 +50,7 @@ export default function Pagination({ currentPage, totalPages }: Props) {
       {/* Next Button */}
       {currentPage < totalPages ? (
         <Link
-          href={`/?page=${currentPage + 1}`}
+          href={`${baseUrl}?page=${currentPage + 1}`}
           className={`${sharedBtnStyles} bg-[#F4D8B4] text-gray-800 hover:bg-[#E8C8A0]`}
         >
           Next →
