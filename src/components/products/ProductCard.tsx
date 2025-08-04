@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "@/store/cartStore";
 import toast from "react-hot-toast";
+import { useHandleAddToCart } from "@/lib/cartUtils";
+import Button from "../forms/Button";
 
 type Props = {
   id: number;
@@ -20,12 +22,8 @@ function ProductCard({ id, title, description, imageUrl, price, index = 0 }: Pro
   const isEven = index % 2 === 0;
   const cardBgClass = isEven ? "bg-gray-100" : "bg-gray-50";
 
-  const addToCart = useCartStore((state) => state.addToCart);
+  const handleAddToCart = useHandleAddToCart();
 
-  const handleAddToCart = () => {
-    addToCart({ id, title, price, imageUrl });
-    toast.success(`${title} تمت إضافته للسلة`);
-  };
 
   return (
     <div className={`${cardBgClass} p-4 flex flex-col h-full hover:bg-gray-200 transition-colors duration-200`}>
@@ -54,12 +52,14 @@ function ProductCard({ id, title, description, imageUrl, price, index = 0 }: Pro
         </span>
       </div>
 
-      <button
-        onClick={handleAddToCart}
+
+      <Button
+        onClick={() => handleAddToCart({ id, title, price, imageUrl })}
         className="mt-auto bg-[#F4D8B4] hover:bg-[#E8C8A0] text-gray-800 font-semibold py-3 px-6 text-center"
+
       >
         ADD TO CART
-      </button>
+      </Button>
     </div>
   );
 }

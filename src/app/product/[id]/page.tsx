@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import { Product } from "@/types/Product";
 import Image from "next/image";
 import Loader from "@/components/Loader";
+import Button from "@/components/forms/Button";
+import { useHandleAddToCart } from "@/lib/cartUtils";
 
 async function getProduct(id: string): Promise<Product> {
   const res = await fetch(`http://localhost:3000/api/products/${id}`, {
@@ -19,10 +21,11 @@ async function getProduct(id: string): Promise<Product> {
 export default function ProductDetailPage() {
   const params = useParams();
   const id = params.id as string;
-  
+
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const handleAddToCart = useHandleAddToCart();
 
   useEffect(() => {
     let mounted = true;
@@ -95,9 +98,17 @@ export default function ProductDetailPage() {
           {product.category && (
             <p className="text-sm text-gray-500">Category: {product.category}</p>
           )}
-          <button className="mt-auto bg-[#F4D8B4] hover:bg-[#E8C8A0] text-gray-800 font-semibold py-3 px-6">
+          <Button
+            onClick={() => handleAddToCart({
+              id: product.id,
+              title: product.title,
+              price: product.price,
+              imageUrl: product.imageUrl,
+            })}
+            className="mt-auto bg-[#F4D8B4] hover:bg-[#E8C8A0] text-gray-800 font-semibold py-3 px-6"
+          >
             ADD TO CART
-          </button>
+          </Button>
         </div>
       </div>
     </main>
