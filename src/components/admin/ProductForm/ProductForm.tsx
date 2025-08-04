@@ -8,7 +8,7 @@ import TextareaField from "@/components/forms/TextareaField";
 import Button from "@/components/forms/Button";
 import { Product } from "@/types/Product";
 import { validateProductForm } from "./validation";
-import { Save, ArrowLeft } from "lucide-react";
+
 
 interface ProductFormProps {
   type: "add" | "edit";
@@ -143,28 +143,24 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
         </div>
       </div>
 
-      <div className="flex items-center gap-4 pt-6 border-t border-gray-200">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={() => router.push("/admin")}
-          className="flex items-center gap-2"
-        >
-          <ArrowLeft size={16} />
-          Cancel
-        </Button>
-        
+      <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-200">
         <Button 
           type="submit" 
           variant="primary"
           disabled={isSubmitting}
-          className="flex items-center gap-2"
         >
-          <Save size={16} />
           {isSubmitting 
             ? (type === "edit" ? "Updating..." : "Adding...") 
             : (type === "edit" ? "Update Product" : "Add Product")
           }
+        </Button>
+        
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() => router.push("/admin")}
+        >
+          Cancel
         </Button>
       </div>
     </form>
