@@ -7,6 +7,8 @@ import Image from "next/image";
 import Loader from "@/components/Loader";
 import Button from "@/components/forms/Button";
 import { useHandleAddToCart } from "@/lib/cartUtils";
+import { notFound } from "next/navigation";
+import Breadcrumb from "@/components/Breadcrumb";
 
 async function getProduct(id: string): Promise<Product> {
   const res = await fetch(`http://localhost:3000/api/products/${id}`, {
@@ -62,12 +64,18 @@ export default function ProductDetailPage() {
   }
 
   if (error || !product) {
+    // If product not found, show 404 page
+    if (error === "Failed to fetch product" || !product) {
+      notFound();
+    }
+
+    // For other errors, show error page
     return (
       <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
         <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden p-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
-            <p className="text-gray-600">{error || "Product not found"}</p>
+            <p className="text-gray-600">{error || "Failed to load product"}</p>
           </div>
         </div>
       </main>
@@ -76,7 +84,11 @@ export default function ProductDetailPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden md:flex">
+      <div className="max-w-4xl mx-auto px-4">
+        {/* Breadcrumb */}
+        <Breadcrumb currentPage={product.title} />
+        
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden md:flex">
         {/* Image */}
         <div className="relative w-full md:w-1/2 h-64 md:h-auto">
           <Image
@@ -109,6 +121,7 @@ export default function ProductDetailPage() {
           >
             ADD TO CART
           </Button>
+        </div>
         </div>
       </div>
     </main>

@@ -1,12 +1,13 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/products/ProductCard";
 import Loader from "@/components/Loader";
 import { getProducts } from "@/lib/products";
 import { Product } from "@/types/Product";
+import { notFound } from "next/navigation";
 
 function isValidPage(page: string | null): boolean {
   return !!page && !isNaN(+page) && Number(page) >= 1;
@@ -15,6 +16,12 @@ function isValidPage(page: string | null): boolean {
 export default function HomePageContent() {
   const searchParams = useSearchParams();
   const pageParam = searchParams.get("page");
+  
+  // Check if page parameter is valid
+  if (pageParam && !isValidPage(pageParam)) {
+    notFound();
+  }
+  
   const currentPage = isValidPage(pageParam) ? parseInt(pageParam!) : 1;
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -29,6 +36,12 @@ export default function HomePageContent() {
         if (mounted) {
           setProducts(data);
           setTotalPages(pagination.totalPages);
+          
+          // Check if current page exceeds total pages
+          if (currentPage > pagination.totalPages && pagination.totalPages > 0) {
+            notFound();
+          }
+          
           setLoading(false);
         }
       }

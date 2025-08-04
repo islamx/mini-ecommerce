@@ -3,6 +3,7 @@
 import { useCartStore } from "@/store/cartStore";
 import Image from "next/image";
 import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function CartPage() {
   const {
@@ -16,9 +17,13 @@ export default function CartPage() {
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-6">
-      <div className="max-w-5xl mx-auto bg-white shadow-lg p-6 rounded-lg">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">Your Cart</h1>
+    <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
+      <div className="max-w-4xl mx-auto px-4">
+        {/* Breadcrumb */}
+        <Breadcrumb currentPage="Cart" />
+        
+        <div className="bg-white shadow-lg p-6 rounded-lg">
+          <h1 className="text-3xl font-bold mb-8 text-gray-800">Your Cart</h1>
 
         {cart.length === 0 ? (
           <p className="text-gray-600 text-center">Your cart is empty. <Link href="/" className="text-orange-500 underline">Continue Shopping</Link></p>
@@ -82,10 +87,11 @@ export default function CartPage() {
                   Checkout
                 </button>
               </div>
-            </div>
-          </>
-        )}
-      </div>
-    </main>
-  );
-}
+                         </div>
+           </>
+         )}
+         </div>
+       </div>
+     </main>
+   );
+ }

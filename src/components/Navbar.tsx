@@ -18,7 +18,7 @@ export default function Navbar() {
             Minierce
           </Link>
           <Link href="/" className="text-gray-700 hover:text-orange-500">
-            Home
+            Products
           </Link>
         </div>
 
