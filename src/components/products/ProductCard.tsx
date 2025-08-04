@@ -23,7 +23,7 @@ function ProductCard({ id, title, description, imageUrl, price, index = 0 }: Pro
   const addToCart = useCartStore((state) => state.addToCart);
 
   const handleAddToCart = () => {
-    addToCart({ id, title, price, imageUrl, quantity: 1 });
+    addToCart({ id, title, price, imageUrl });
     toast.success(`${title} تمت إضافته للسلة`);
   };
 
