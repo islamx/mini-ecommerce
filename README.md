@@ -2,6 +2,10 @@
 
 A modern e-commerce platform built with Next.js 15, TypeScript, Tailwind CSS, and MongoDB. Features product management, shopping cart, and responsive design.
 
+## 🖼️ Preview
+
+Here's a quick look at the homepage UI:
+
 ![Mini E-Commerce Platform](./public/screenshot.png)
 
 ## 🚀 Live Demo
