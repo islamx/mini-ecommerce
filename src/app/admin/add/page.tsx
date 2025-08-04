@@ -1,5 +1,5 @@
 import ProductForm from "@/components/admin/ProductForm/ProductForm";
-import Breadcrumb from "@/components/Breadcrumb";
+import Breadcrumb from "@/components/shared/Breadcrumb";
 import { PlusCircle, Package } from "lucide-react";
 
 export default function AddProductPage() {

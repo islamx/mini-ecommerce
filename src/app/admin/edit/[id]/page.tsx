@@ -1,6 +1,6 @@
 import { Product } from "@/types/Product";
 import ProductForm from "@/components/admin/ProductForm/ProductForm";
-import Breadcrumb from "@/components/Breadcrumb";
+import Breadcrumb from "@/components/shared/Breadcrumb";
 import { Pencil, Package, Edit3 } from "lucide-react";
 
 export default async function EditProductPage({

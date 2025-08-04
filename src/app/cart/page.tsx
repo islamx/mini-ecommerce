@@ -3,7 +3,7 @@
 import { useCartStore } from "@/store/cartStore";
 import Image from "next/image";
 import Link from "next/link";
-import Breadcrumb from "@/components/Breadcrumb";
+import Breadcrumb from "@/components/shared/Breadcrumb";
 import Button from "@/components/forms/Button";
 import CheckoutThanks from "@/components/products/CheckoutThanks";
 import { useEffect } from "react";

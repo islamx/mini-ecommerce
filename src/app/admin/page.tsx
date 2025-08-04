@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "@/lib/products";
 import AdminTable from "@/components/admin/AdminTable";
-import Pagination from "@/components/Pagination";
-import Loader from "@/components/Loader";
+import Pagination from "@/components/shared/Pagination";
+import Loader from "@/components/shared/Loader";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";

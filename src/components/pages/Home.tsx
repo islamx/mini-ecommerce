@@ -2,10 +2,10 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Pagination from "@/components/Pagination";
+import Pagination from "@/components/shared/Pagination";
 import ProductCard from "@/components/products/ProductCard";
-import Loader from "@/components/Loader";
-import ProductFilter from "@/components/ProductFilter";
+import Loader from "@/components/shared/Loader";
+import ProductFilter from "@/components/products/ProductFilter";
 import { getProducts } from "@/lib/products";
 import { Product } from "@/types/Product";
 import { notFound } from "next/navigation";

@@ -7,7 +7,7 @@ import { toast } from "react-hot-toast";
 import { deleteProduct } from "@/lib/products";
 import { useState } from "react";
 import ConfirmDeleteModal from "../shared/ConfirmDeleteModal";
-import ProductFilter from "./ProductFilter";
+import ProductFilter from "@/components/products/ProductFilter";
 import Button from "../forms/Button";
 
 export default function AdminTable({ products }: { products: Product[] }) {
