@@ -11,17 +11,21 @@ type CartItem = {
 
 type CartStore = {
   cart: CartItem[];
+  hasCheckedOut: boolean;
   addToCart: (item: Omit<CartItem, "quantity">) => void;
   removeFromCart: (id: number) => void;
   increaseQuantity: (id: number) => void;
   decreaseQuantity: (id: number) => void;
   clearCart: () => void;
+  checkout: () => void;
+  resetCheckoutState: () => void;
 };
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       cart: [],
+      hasCheckedOut: false,
       addToCart: (item) => {
         const existing = get().cart.find((i) => i.id === item.id);
         if (existing) {
@@ -57,6 +61,12 @@ export const useCartStore = create<CartStore>()(
       },
       clearCart: () => {
         set({ cart: [] });
+      },
+      checkout: () => {
+        set({ cart: [], hasCheckedOut: true });
+      },
+      resetCheckoutState: () => {
+        set({ hasCheckedOut: false });
       },
     }),
     { name: "cart-storage" } // LocalStorage key

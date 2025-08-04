@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/forms/Button";
+import CheckoutThanks from "@/components/products/CheckoutThanks";
+import { useEffect } from "react";
 
 export default function CartPage() {
   const {
@@ -13,21 +15,38 @@ export default function CartPage() {
     increaseQuantity,
     decreaseQuantity,
     clearCart,
+    checkout,
+    hasCheckedOut,
+    resetCheckoutState,
   } = useCartStore();
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  // Reset checkout state when component unmounts
+  useEffect(() => {
+    return () => {
+      // Reset checkout state when leaving the page
+      setTimeout(() => {
+        resetCheckoutState();
+      }, 100);
+    };
+  }, [resetCheckoutState]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
       <div className="max-w-4xl mx-auto px-4">
         {/* Breadcrumb */}
-        <Breadcrumb currentPage="Cart" />
+        {!hasCheckedOut && <Breadcrumb currentPage="Cart" />}
         
         <div className="bg-white shadow-lg p-6 rounded-lg">
-          <h1 className="text-3xl font-bold mb-8 text-gray-800">Your Cart</h1>
+          {!hasCheckedOut && <h1 className="text-3xl font-bold mb-8 text-gray-800">Your Cart</h1>}
 
         {cart.length === 0 ? (
-          <p className="text-gray-600 text-center">Your cart is empty. <Link href="/" className="text-orange-500 underline">Continue Shopping</Link></p>
+          hasCheckedOut ? (
+            <CheckoutThanks />
+          ) : (
+            <p className="text-gray-600 text-center">Your cart is empty. <Link href="/" className="text-orange-500 underline">Continue Shopping</Link></p>
+          )
         ) : (
           <>
             <div className="space-y-6">
@@ -92,6 +111,7 @@ export default function CartPage() {
                   variant="primary"
                   size="md"
                   className="mt-3"
+                  onClick={checkout}
                 >
                   Checkout
                 </Button>
