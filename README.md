@@ -2,6 +2,18 @@
 
 A modern e-commerce platform built with Next.js 15, TypeScript, Tailwind CSS, and MongoDB. Features product management, shopping cart, and responsive design.
 
+## 🚀 Live Demo
+
+**🌐 Main Application**: [https://minierce.vercel.app/](https://minierce.vercel.app/)
+
+### 📱 Pages & Features
+- **🏠 Home Page**: [Browse products](https://minierce.vercel.app/) with search and filtering
+- **🛒 Cart Page**: [Manage shopping cart](https://minierce.vercel.app/cart) and checkout
+- **📦 Product Details**: [View individual product](https://minierce.vercel.app/product/1) information
+- **⚙️ Admin Dashboard**: [Manage all products](https://minierce.vercel.app/admin)
+- **➕ Add Product**: [Create new products](https://minierce.vercel.app/admin/add)
+- **✏️ Edit Product**: [Update existing products](https://minierce.vercel.app/admin/edit/1)
+
 ## 🚀 Features
 
 ### Customer Features
