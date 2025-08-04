@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/products/ProductCard";
+import Loader from "@/components/Loader";
 import { getProducts } from "@/lib/products";
 import { Product } from "@/types/Product";
 
@@ -18,17 +19,24 @@ export default function HomePageContent() {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
+    setLoading(true);
     getProducts({ page: currentPage, limit: 7, isAdmin: false }).then(
       ({ data, pagination }) => {
         if (mounted) {
           setProducts(data);
           setTotalPages(pagination.totalPages);
+          setLoading(false);
         }
       }
-    );
+    ).catch(() => {
+      if (mounted) {
+        setLoading(false);
+      }
+    });
     return () => {
       mounted = false;
     };
@@ -48,16 +56,20 @@ export default function HomePageContent() {
               Our Products Collection
             </h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.map((product, index) => (
-                <div
-                  key={product._id}
-                  className={index === 4 ? "lg:col-span-2" : ""}
-                >
-                  <ProductCard {...product} index={index} />
-                </div>
-              ))}
-            </div>
+            {loading ? (
+              <Loader text="Loading products..." />
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {products.map((product, index) => (
+                  <div
+                    key={product._id}
+                    className={index === 4 ? "lg:col-span-2" : ""}
+                  >
+                    <ProductCard {...product} index={index} />
+                  </div>
+                ))}
+              </div>
+            )}
 
             <Pagination currentPage={currentPage} totalPages={totalPages} />
           </div>
@@ -66,3 +78,4 @@ export default function HomePageContent() {
     </main>
   );
 }
+

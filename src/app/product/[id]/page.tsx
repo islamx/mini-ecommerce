@@ -1,5 +1,10 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { Product } from "@/types/Product";
 import Image from "next/image";
+import Loader from "@/components/Loader";
 
 async function getProduct(id: string): Promise<Product> {
   const res = await fetch(`http://localhost:3000/api/products/${id}`, {
@@ -11,13 +16,60 @@ async function getProduct(id: string): Promise<Product> {
   return res.json();
 }
 
-type ProductDetailPageProps = {
-  params: Promise<{ id: string }>;
-};
+export default function ProductDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
+  
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
-  const { id } = await params;
-  const product = await getProduct(id);
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    setError(null);
+
+    getProduct(id)
+      .then((data) => {
+        if (mounted) {
+          setProduct(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (mounted) {
+          setError(err.message);
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [id]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
+        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+          <Loader text="Loading product..." />
+        </div>
+      </main>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
+        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden p-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
+            <p className="text-gray-600">{error || "Product not found"}</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
