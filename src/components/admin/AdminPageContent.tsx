@@ -47,15 +47,15 @@ export default function AdminPageContent() {
 
   return (
     <main className="max-w-7xl mx-auto py-10 px-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Admin - Product Management</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold">Admin - Product Management</h1>
 
         <Link
           href="/admin/add"
-          className="inline-flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 transition-colors"
+          className="inline-flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 transition-colors w-full sm:w-auto justify-center"
         >
           <PlusCircle size={18} />
-          <div>Add Product</div>
+          <span>Add Product</span>
         </Link>
       </div>
 

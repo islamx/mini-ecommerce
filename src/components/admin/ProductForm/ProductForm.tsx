@@ -89,9 +89,9 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="md:col-span-2">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div className="lg:col-span-2">
           <InputField
             label="Product Title"
             name="title"
@@ -102,7 +102,7 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
           />
         </div>
         
-        <div className="md:col-span-2">
+        <div className="lg:col-span-2">
           <TextareaField
             label="Description"
             name="description"
@@ -131,7 +131,7 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
           placeholder="e.g., Electronics, Clothing..."
         />
         
-        <div className="md:col-span-2">
+        <div className="lg:col-span-2">
           <InputField
             label="Image URL"
             name="imageUrl"
@@ -143,11 +143,12 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-200">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-gray-200">
         <Button 
           type="submit" 
           variant="primary"
           disabled={isSubmitting}
+          className="w-full sm:w-auto"
         >
           {isSubmitting 
             ? (type === "edit" ? "Updating..." : "Adding...") 
@@ -159,6 +160,7 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
           type="button"
           variant="secondary"
           onClick={() => router.push("/admin")}
+          className="w-full sm:w-auto"
         >
           Cancel
         </Button>

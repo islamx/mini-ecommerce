@@ -51,17 +51,28 @@ export default function CartPage() {
           <>
             <div className="space-y-6">
               {cart.map((item) => (
-                <div key={item.id} className="flex items-center gap-6 border-b pb-6 relative">
-                  <div className="relative w-24 h-24">
+                <div key={item.id} className="flex items-start gap-4 sm:gap-6 border-b pb-6">
+                  <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0">
                     <img
                       src={item.imageUrl}
                       alt={item.title}
                       className="object-cover rounded w-full h-full"
                     />
                   </div>
-                  <div className="flex-1">
-                    <h2 className="font-semibold text-gray-800">{item.title}</h2>
-                    <p className="text-gray-600">{item.price.toLocaleString()} €</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <h2 className="font-semibold text-gray-800 text-sm sm:text-base truncate">{item.title}</h2>
+                        <p className="text-gray-600 text-sm sm:text-base">{item.price.toLocaleString()} €</p>
+                      </div>
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="text-gray-500 hover:text-red-600 text-lg font-bold transition-colors duration-200 px-2 py-1 rounded hover:bg-gray-100 flex-shrink-0"
+                        title="Remove item"
+                      >
+                        ×
+                      </button>
+                    </div>
                     <div className="flex items-center mt-2 gap-3">
                       <Button
                         variant="secondary"
@@ -80,13 +91,6 @@ export default function CartPage() {
                       </Button>
                     </div>
                   </div>
-                  <button
-                    onClick={() => removeFromCart(item.id)}
-                    className="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-lg font-bold transition-colors duration-200 px-2 py-1 rounded hover:bg-gray-100"
-                    title="Remove item"
-                  >
-                    ×
-                  </button>
                 </div>
               ))}
             </div>
