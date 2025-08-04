@@ -1,9 +1,6 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useCartStore } from "@/store/cartStore";
-import toast from "react-hot-toast";
 import { useHandleAddToCart } from "@/lib/cartUtils";
 import Button from "../forms/Button";
 
@@ -16,6 +13,10 @@ type Props = {
   index?: number;
 };
 
+function truncate(text: string, maxLength: number) {
+  return text.length > maxLength ? text.slice(0, maxLength - 1) + "…" : text;
+}
+
 function ProductCard({ id, title, description, imageUrl, price, index = 0 }: Props) {
   const originalPrice = price;
   const discountedPrice = Math.round(price * 0.7);
@@ -24,39 +25,41 @@ function ProductCard({ id, title, description, imageUrl, price, index = 0 }: Pro
 
   const handleAddToCart = useHandleAddToCart();
 
-
   return (
     <div className={`${cardBgClass} p-4 flex flex-col h-full hover:bg-gray-200 transition-colors duration-200`}>
       <Link href={`/product/${id}`}>
-        <div className="relative w-full h-48 mb-4 bg-white overflow-hidden">
-          <Image
+        <div className="relative w-full h-48 mb-4 bg-white overflow-hidden flex items-center justify-center">
+          <img
             src={imageUrl}
             alt={title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover w-full h-full"
             loading="lazy"
           />
         </div>
-        <h3 className="text-sm font-semibold text-gray-600 mb-1 text-center">{title}</h3>
+
+        <div className="mx-auto max-w-xs sm:max-w-sm md:max-w-md text-center">
+          <h3 className="text-sm font-semibold text-gray-600 mb-1 truncate">
+            <span title={title}>{truncate(title, 40)}</span>
+          </h3>
+
+          <p className="text-base text-gray-800 mb-2 line-clamp-2 min-h-[48px] ">
+            <span title={description}>{truncate(description, 100)}</span>
+          </p>
+        </div>
+
+        <div className="mb-4 flex items-center justify-center gap-2">
+          <span className="text-gray-400 line-through text-sm">
+            {originalPrice.toLocaleString()} €
+          </span>
+          <span className="text-xl font-bold text-gray-800">
+            {discountedPrice.toLocaleString()} €
+          </span>
+        </div>
       </Link>
-
-      <p className="text-base text-gray-800 mb-2 line-clamp-2 text-center">{description}</p>
-
-      <div className="mb-4 flex items-center justify-center gap-2">
-        <span className="text-gray-400 line-through text-sm">
-          {originalPrice.toLocaleString()} €
-        </span>
-        <span className="text-xl font-bold text-gray-800">
-          {discountedPrice.toLocaleString()} €
-        </span>
-      </div>
-
 
       <Button
         onClick={() => handleAddToCart({ id, title, price, imageUrl })}
         className="mt-auto bg-[#F4D8B4] hover:bg-[#E8C8A0] text-gray-800 font-semibold py-3 px-6 text-center"
-
       >
         ADD TO CART
       </Button>
