@@ -12,8 +12,31 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "8");
     const skip = (page - 1) * limit;
 
-    const products = await Product.find().sort({ id: 1 }).skip(skip).limit(limit);
-    const total = await Product.countDocuments();
+    // Get filter parameters
+    const name = searchParams.get("name");
+    const category = searchParams.get("category");
+    const minPrice = searchParams.get("minPrice");
+    const maxPrice = searchParams.get("maxPrice");
+
+    // Build filter object
+    const filter: any = {};
+    
+    if (name) {
+      filter.title = { $regex: name, $options: "i" };
+    }
+    
+    if (category) {
+      filter.category = category;
+    }
+    
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = parseFloat(minPrice);
+      if (maxPrice) filter.price.$lte = parseFloat(maxPrice);
+    }
+
+    const products = await Product.find(filter).sort({ id: 1 }).skip(skip).limit(limit);
+    const total = await Product.countDocuments(filter);
 
     return NextResponse.json({
       data: products,

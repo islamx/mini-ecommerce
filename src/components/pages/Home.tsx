@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/products/ProductCard";
 import Loader from "@/components/Loader";
+import ProductFilter from "@/components/ProductFilter";
 import { getProducts } from "@/lib/products";
 import { Product } from "@/types/Product";
 import { notFound } from "next/navigation";
@@ -27,11 +28,30 @@ export default function HomePageContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [maxPrice, setMaxPrice] = useState(1000);
+  const [filterLoading, setFilterLoading] = useState(false);
 
   useEffect(() => {
     let mounted = true;
     setLoading(true);
-    getProducts({ page: currentPage, limit: 7, isAdmin: false }).then(
+    setFilterLoading(true);
+    
+    // Get filter parameters from URL
+    const name = searchParams.get("name");
+    const category = searchParams.get("category");
+    const minPrice = searchParams.get("minPrice");
+    const maxPrice = searchParams.get("maxPrice");
+    
+    getProducts({ 
+      page: currentPage, 
+      limit: 7, 
+      isAdmin: false,
+      name: name || undefined,
+      category: category || undefined,
+      minPrice: minPrice || undefined,
+      maxPrice: maxPrice || undefined,
+    }).then(
       ({ data, pagination }) => {
         if (mounted) {
           setProducts(data);
@@ -43,17 +63,41 @@ export default function HomePageContent() {
           }
           
           setLoading(false);
+          setFilterLoading(false);
         }
       }
     ).catch(() => {
       if (mounted) {
         setLoading(false);
+        setFilterLoading(false);
       }
     });
     return () => {
       mounted = false;
     };
-  }, [currentPage]);
+  }, [currentPage, searchParams]);
+
+  // Get categories and max price on component mount
+  useEffect(() => {
+    const fetchFilterData = async () => {
+      try {
+        // Get all products to extract categories and max price
+        const { data } = await getProducts({ limit: 1000, isAdmin: false });
+        
+        // Extract unique categories
+        const uniqueCategories = [...new Set(data.map(product => product.category).filter((cat): cat is string => Boolean(cat)))];
+        setCategories(uniqueCategories);
+        
+        // Get max price
+        const maxProductPrice = Math.max(...data.map(product => product.price));
+        setMaxPrice(maxProductPrice);
+      } catch (error) {
+        console.error("Failed to fetch filter data:", error);
+      }
+    };
+    
+    fetchFilterData();
+  }, []);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 relative overflow-hidden">
@@ -91,10 +135,13 @@ export default function HomePageContent() {
                  </div>
                </div>
                
-               <p className="text-gray-600 text-center md:text-left">
-                 Discover our curated selection of premium products
-               </p>
-             </div>
+                            <p className="text-gray-600 text-center md:text-left">
+               Discover our curated selection of premium products
+             </p>
+           </div>
+
+           {/* Product Filter */}
+           <ProductFilter categories={categories} maxPrice={maxPrice} isLoading={filterLoading} />
 
             {loading ? (
               <Loader text="Loading products..." />
