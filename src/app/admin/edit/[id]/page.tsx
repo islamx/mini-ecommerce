@@ -1,7 +1,8 @@
-import { Product } from "@/types/Product";
 import ProductForm from "@/components/admin/ProductForm/ProductForm";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 import { Pencil, Package, Edit3 } from "lucide-react";
+import { dbConnect } from "@/lib/dbConnect";
+import { Product as ProductModel } from "@/models/Product";
 
 export default async function EditProductPage({
   params,
@@ -11,16 +12,12 @@ export default async function EditProductPage({
   const { id } = await params;
   
   try {
-    const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/products/${id}`, {
-      cache: "no-store",
-    });
+    await dbConnect();
+    const product = await ProductModel.findOne({ id: Number(id) });
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch product');
+    if (!product) {
+      throw new Error('Product not found');
     }
-
-    const product: Product = await res.json();
 
     return (
       <main className="max-w-4xl mx-auto py-8 px-4">
@@ -51,14 +48,20 @@ export default async function EditProductPage({
         </div>
       </main>
     );
-             } catch {
+             } catch (error) {
+             console.error("Edit product error:", error);
              return (
       <div className="max-w-4xl mx-auto py-8 px-4">
         <Breadcrumb currentPage="Edit Product" isAdmin={true} />
         <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-red-600">
           <div className="flex items-center gap-2">
             <Edit3 size={20} />
-            <span>Failed to load product with ID {id}</span>
+            <div>
+              <span className="font-semibold">Failed to load product with ID {id}</span>
+              <p className="text-sm mt-1 text-red-500">
+                This product might not exist or there was a connection error.
+              </p>
+            </div>
           </div>
         </div>
       </div>
