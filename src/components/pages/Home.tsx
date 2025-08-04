@@ -65,9 +65,36 @@ export default function HomePageContent() {
       <div className="relative z-10 py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="bg-white shadow-2xl p-8 md:p-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-12 text-center text-gray-800">
-              Our Products Collection
-            </h1>
+                         <div className="mb-12">
+               {/* Modern split design */}
+               <div className="flex flex-col md:flex-row items-center justify-between mb-8">
+                 <div className="text-left mb-6 md:mb-0">
+                   <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-2">
+                     Our Products
+                   </h1>
+                   <div className="flex items-center gap-3">
+                     <div className="w-12 h-0.5 bg-orange-500"></div>
+                     <span className="text-orange-600 font-semibold text-lg">Collection</span>
+                   </div>
+                 </div>
+                 
+                 <div className="flex items-center gap-4">
+                   <div className="text-center">
+                     <div className="text-2xl font-bold text-gray-900">50+</div>
+                     <div className="text-sm text-gray-500">Products</div>
+                   </div>
+                   <div className="w-px h-8 bg-gray-300"></div>
+                   <div className="text-center">
+                     <div className="text-2xl font-bold text-gray-900">4.9★</div>
+                     <div className="text-sm text-gray-500">Rating</div>
+                   </div>
+                 </div>
+               </div>
+               
+               <p className="text-gray-600 text-center md:text-left">
+                 Discover our curated selection of premium products
+               </p>
+             </div>
 
             {loading ? (
               <Loader text="Loading products..." />
