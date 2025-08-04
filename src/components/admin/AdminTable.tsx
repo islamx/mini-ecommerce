@@ -40,15 +40,15 @@ export default function AdminTable({ products }: { products: Product[] }) {
         onSearchChange={setSearch}
       />
 
-      <div className="overflow-x-auto rounded-md bg-white shadow border border-gray-200">
+      <div className="overflow-x-auto rounded-lg bg-white shadow-lg border border-gray-200">
         <table className="min-w-full text-sm text-gray-700">
-          <thead className="bg-orange-100 text-gray-800 uppercase text-xs">
+          <thead className="bg-gradient-to-r from-orange-50 to-orange-100 text-gray-800 uppercase text-xs font-semibold">
             <tr>
-              <th className="p-3 text-left whitespace-nowrap">ID</th>
-              <th className="p-3 text-left whitespace-nowrap">Title</th>
-              <th className="p-3 text-left whitespace-nowrap">Price</th>
-              <th className="p-3 text-left whitespace-nowrap">Category</th>
-              <th className="p-3 text-left whitespace-nowrap">Actions</th>
+              <th className="p-4 text-left whitespace-nowrap border-b border-orange-200">ID</th>
+              <th className="p-4 text-left whitespace-nowrap border-b border-orange-200">Title</th>
+              <th className="p-4 text-left whitespace-nowrap border-b border-orange-200">Price</th>
+              <th className="p-4 text-left whitespace-nowrap border-b border-orange-200">Category</th>
+              <th className="p-4 text-left whitespace-nowrap border-b border-orange-200">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -56,34 +56,36 @@ export default function AdminTable({ products }: { products: Product[] }) {
               filtered.map((product) => (
                 <tr
                   key={product.id}
-                  className="border-t border-gray-100 hover:bg-gray-50 transition-colors"
+                  className="border-t border-gray-100 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-25 transition-all duration-200"
                 >
-                  <td className="p-3 whitespace-nowrap">{product.id}</td>
-                  <td className="p-3 whitespace-nowrap">{product.title}</td>
-                  <td className="p-3 whitespace-nowrap">{product.price} E£</td>
-                  <td className="p-3 whitespace-nowrap">{product.category || "—"}</td>
-                  <td className="p-3 flex items-center gap-3">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => router.push(`/admin/edit/${product.id}`)}
-                      title="Edit"
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      <Pencil size={16} />
-                      <span className="hidden sm:inline">Edit</span>
-                    </Button>
+                  <td className="p-4 whitespace-nowrap font-medium text-gray-900">{product.id}</td>
+                  <td className="p-4 whitespace-nowrap font-medium">{product.title}</td>
+                  <td className="p-4 whitespace-nowrap font-semibold text-green-600">{product.price} E£</td>
+                  <td className="p-4 whitespace-nowrap text-gray-600">{product.category || "—"}</td>
+                  <td className="p-3">
+                                         <div className="flex items-center gap-2">
+                       <Button
+                         variant="secondary"
+                         size="sm"
+                         onClick={() => router.push(`/admin/edit/${product.id}`)}
+                         title="Edit Product"
+                         className="flex items-center gap-1"
+                       >
+                         <Pencil size={16} />
+                         <span className="hidden sm:inline">Edit</span>
+                       </Button>
 
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setSelectedId(product.id)}
-                      title="Delete"
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      <Trash2 size={16} />
-                      <span className="hidden sm:inline">Delete</span>
-                    </Button>
+                       <Button
+                         variant="danger"
+                         size="sm"
+                         onClick={() => setSelectedId(product.id)}
+                         title="Delete Product"
+                         className="flex items-center gap-1"
+                       >
+                         <Trash2 size={16} />
+                         <span className="hidden sm:inline">Delete</span>
+                       </Button>
+                     </div>
                   </td>
                 </tr>
               ))

@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "8");
     const skip = (page - 1) * limit;
 
-    const products = await Product.find().skip(skip).limit(limit);
+    const products = await Product.find().sort({ id: 1 }).skip(skip).limit(limit);
     const total = await Product.countDocuments();
 
     return NextResponse.json({
