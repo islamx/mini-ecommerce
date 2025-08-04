@@ -36,8 +36,8 @@ export default function CartPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
       <div className="max-w-4xl mx-auto px-4">
-        {/* Breadcrumb */}
-        {!hasCheckedOut && <Breadcrumb currentPage="Cart" />}
+        {/* Breadcrumb - only show when cart has items or during checkout */}
+        {!hasCheckedOut && cart.length > 0 && <Breadcrumb currentPage="Cart" />}
         
         <div className="bg-white shadow-lg p-6 rounded-lg">
           {!hasCheckedOut && cart.length > 0 && <h1 className="text-3xl font-bold mb-8 text-gray-800">Your Cart</h1>}
