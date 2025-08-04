@@ -46,6 +46,16 @@ export async function getProducts({
   return res.json();
 }
 
+export async function getProductCount(): Promise<{ total: number }> {
+  const res = await fetch("/api/products/count", {
+    next: { revalidate: 10 },
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch product count");
+
+  return res.json();
+}
+
 export async function deleteProduct(id: number): Promise<{ message: string }> {
   const res = await fetch(`/api/products/${id}`, {
     method: "DELETE",

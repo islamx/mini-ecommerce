@@ -6,7 +6,7 @@ import Pagination from "@/components/shared/Pagination";
 import ProductCard from "@/components/products/ProductCard";
 import LoadingContainer from "@/components/shared/LoadingContainer";
 import ProductFilter from "@/components/products/ProductFilter";
-import { getProducts } from "@/lib/products";
+import { getProducts, getProductCount } from "@/lib/products";
 import { Product } from "@/types/Product";
 import { notFound } from "next/navigation";
 
@@ -31,6 +31,7 @@ export default function HomePageContent() {
   const [categories, setCategories] = useState<string[]>([]);
   const [maxPrice, setMaxPrice] = useState(1000);
   const [filterLoading, setFilterLoading] = useState(false);
+  const [productCount, setProductCount] = useState(0);
 
   useEffect(() => {
     let mounted = true;
@@ -77,9 +78,9 @@ export default function HomePageContent() {
     };
   }, [currentPage, searchParams]);
 
-  // Get categories and max price on component mount
+  // Get categories, max price, and product count on component mount
   useEffect(() => {
-    const fetchFilterData = async () => {
+    const fetchData = async () => {
       try {
         // Get all products to extract categories and max price
         const { data } = await getProducts({ limit: 1000, isAdmin: false });
@@ -91,12 +92,16 @@ export default function HomePageContent() {
         // Get max price
         const maxProductPrice = Math.max(...data.map(product => product.price));
         setMaxPrice(maxProductPrice);
+
+        // Get product count
+        const { total } = await getProductCount();
+        setProductCount(total);
       } catch (error) {
-        console.error("Failed to fetch filter data:", error);
+        console.error("Failed to fetch data:", error);
       }
     };
     
-    fetchFilterData();
+    fetchData();
   }, []);
 
   return (
@@ -124,12 +129,12 @@ export default function HomePageContent() {
                  
                  <div className="flex items-center gap-4">
                    <div className="text-center">
-                     <div className="text-2xl font-bold text-gray-900">50+</div>
+                     <div className="text-2xl font-bold text-gray-900">{productCount}</div>
                      <div className="text-sm text-gray-500">Products</div>
                    </div>
                    <div className="w-px h-8 bg-gray-300"></div>
                    <div className="text-center">
-                     <div className="text-2xl font-bold text-gray-900">4.9★</div>
+                     <div className="text-2xl font-bold text-gray-900">5★</div>
                      <div className="text-sm text-gray-500">Rating</div>
                    </div>
                  </div>
