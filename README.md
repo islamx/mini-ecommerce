@@ -2,6 +2,8 @@
 
 A modern e-commerce platform built with Next.js 15, TypeScript, Tailwind CSS, and MongoDB. Features product management, shopping cart, and responsive design.
 
+![Mini E-Commerce Platform](./public/project-screenshot.png)
+
 ## 🚀 Live Demo
 
 **🌐 Main Application**: [https://minierce.vercel.app/](https://minierce.vercel.app/)
@@ -35,6 +37,96 @@ A modern e-commerce platform built with Next.js 15, TypeScript, Tailwind CSS, an
 - Zustand for state management
 - RESTful API for CRUD operations
 - SEO optimized with proper meta tags
+
+## 🔌 API Examples
+
+### Get All Products
+```bash
+# cURL
+curl -X GET "https://minierce.vercel.app/api/products?page=1&limit=10"
+
+# Postman
+GET https://minierce.vercel.app/api/products?page=1&limit=10
+```
+
+### Get Product by ID
+```bash
+# cURL
+curl -X GET "https://minierce.vercel.app/api/products/1"
+
+# Postman
+GET https://minierce.vercel.app/api/products/1
+```
+
+### Get Product Count
+```bash
+# cURL
+curl -X GET "https://minierce.vercel.app/api/products/count"
+
+# Postman
+GET https://minierce.vercel.app/api/products/count
+```
+
+### Create Product (Admin)
+```bash
+# cURL
+curl -X POST "https://minierce.vercel.app/api/products" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "New Product",
+    "description": "Product description",
+    "price": 99.99,
+    "category": "Electronics",
+    "imageUrl": "https://example.com/image.jpg"
+  }'
+
+# Postman
+POST https://minierce.vercel.app/api/products
+Content-Type: application/json
+
+{
+  "title": "New Product",
+  "description": "Product description", 
+  "price": 99.99,
+  "category": "Electronics",
+  "imageUrl": "https://example.com/image.jpg"
+}
+```
+
+### Update Product (Admin)
+```bash
+# cURL
+curl -X PUT "https://minierce.vercel.app/api/products/1" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Updated Product",
+    "description": "Updated description",
+    "price": 149.99,
+    "category": "Electronics",
+    "imageUrl": "https://example.com/updated-image.jpg"
+  }'
+
+# Postman
+PUT https://minierce.vercel.app/api/products/1
+Content-Type: application/json
+
+{
+  "title": "Updated Product",
+  "description": "Updated description",
+  "price": 149.99,
+  "category": "Electronics", 
+  "imageUrl": "https://example.com/updated-image.jpg"
+}
+```
+
+### Delete Product (Admin)
+```bash
+# cURL
+curl -X DELETE "https://minierce.vercel.app/api/products/1"
+
+# Postman
+DELETE https://minierce.vercel.app/api/products/1
+```
 
 ## 🛠️ Tech Stack
 
