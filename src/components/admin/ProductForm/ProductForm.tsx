@@ -8,6 +8,7 @@ import TextareaField from "@/components/forms/TextareaField";
 import Button from "@/components/forms/Button";
 import { Product } from "@/types/Product";
 import { validateProductForm } from "./validation";
+import { Save, ArrowLeft } from "lucide-react";
 
 interface ProductFormProps {
   type: "add" | "edit";
@@ -24,6 +25,8 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
     category: "",
     imageUrl: "",
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Prefill in case of edit
   useEffect(() => {
@@ -44,10 +47,12 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const validationError = validateProductForm(form);
     if (validationError) {
       toast.error(validationError);
+      setIsSubmitting(false);
       return;
     }
 
@@ -63,61 +68,103 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
 
     const method = type === "edit" ? "PUT" : "POST";
 
+    try {
+      const res = await fetch(endpoint, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    const res = await fetch(endpoint, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (res.ok) {
-      toast.success(`Product ${type === "edit" ? "updated" : "added"} successfully!`);
-      router.push("/admin");
-    } else {
-      toast.error(`Failed to ${type === "edit" ? "update" : "add"} product`);
+      if (res.ok) {
+        toast.success(`Product ${type === "edit" ? "updated" : "added"} successfully!`);
+        router.push("/admin");
+      } else {
+        toast.error(`Failed to ${type === "edit" ? "update" : "add"} product`);
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow">
-      <InputField
-        label="Title"
-        name="title"
-        value={form.title}
-        onChange={handleChange}
-        required
-      />
-      <TextareaField
-        label="Description"
-        name="description"
-        value={form.description}
-        onChange={handleChange}
-        required
-      />
-      <InputField
-        label="Price"
-        name="price"
-        type="number"
-        value={form.price}
-        onChange={handleChange}
-        required
-      />
-      <InputField
-        label="Category"
-        name="category"
-        value={form.category}
-        onChange={handleChange}
-      />
-      <InputField
-        label="Image URL"
-        name="imageUrl"
-        value={form.imageUrl}
-        onChange={handleChange}
-        required
-      />
-      <Button type="submit">
-        {type === "edit" ? "Update Product" : "Add Product"}
-      </Button>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="md:col-span-2">
+          <InputField
+            label="Product Title"
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            placeholder="Enter product title..."
+            required
+          />
+        </div>
+        
+        <div className="md:col-span-2">
+          <TextareaField
+            label="Description"
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            placeholder="Enter product description..."
+            required
+          />
+        </div>
+        
+        <InputField
+          label="Price (E£)"
+          name="price"
+          type="number"
+          value={form.price}
+          onChange={handleChange}
+          placeholder="0.00"
+          required
+        />
+        
+        <InputField
+          label="Category"
+          name="category"
+          value={form.category}
+          onChange={handleChange}
+          placeholder="e.g., Electronics, Clothing..."
+        />
+        
+        <div className="md:col-span-2">
+          <InputField
+            label="Image URL"
+            name="imageUrl"
+            value={form.imageUrl}
+            onChange={handleChange}
+            placeholder="https://example.com/image.jpg"
+            required
+          />
+        </div>
+      </div>
+
+      <div className="flex items-center gap-4 pt-6 border-t border-gray-200">
+        <Button
+          type="button"
+          onClick={() => router.push("/admin")}
+          className="flex items-center gap-2 bg-gray-100 text-gray-700 hover:bg-gray-200"
+        >
+          <ArrowLeft size={16} />
+          Cancel
+        </Button>
+        
+        <Button 
+          type="submit" 
+          disabled={isSubmitting}
+          className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-50"
+        >
+          <Save size={16} />
+          {isSubmitting 
+            ? (type === "edit" ? "Updating..." : "Adding...") 
+            : (type === "edit" ? "Update Product" : "Add Product")
+          }
+        </Button>
+      </div>
     </form>
   );
 }
