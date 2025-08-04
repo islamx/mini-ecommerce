@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Pagination from "@/components/shared/Pagination";
 import ProductCard from "@/components/products/ProductCard";
-import Loader from "@/components/shared/Loader";
+import LoadingContainer from "@/components/shared/LoadingContainer";
 import ProductFilter from "@/components/products/ProductFilter";
 import { getProducts } from "@/lib/products";
 import { Product } from "@/types/Product";
@@ -144,7 +144,7 @@ export default function HomePageContent() {
            <ProductFilter categories={categories} maxPrice={maxPrice} isLoading={filterLoading} />
 
             {loading ? (
-              <Loader text="Loading products..." />
+              <LoadingContainer text="Loading products..." />
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {products.map((product, index) => (

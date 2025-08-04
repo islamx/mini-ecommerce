@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Product } from "@/types/Product";
 
-import Loader from "@/components/shared/Loader";
+import LoadingContainer from "@/components/shared/LoadingContainer";
 import Button from "@/components/forms/Button";
 import { useHandleAddToCart } from "@/lib/cartUtils";
 import { notFound } from "next/navigation";
@@ -57,7 +57,7 @@ export default function ProductDetailPage() {
     return (
       <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
         <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-          <Loader text="Loading product..." />
+          <LoadingContainer text="Loading product..." />
         </div>
       </main>
     );

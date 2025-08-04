@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getProducts } from "@/lib/products";
 import AdminTable from "@/components/admin/AdminTable";
 import Pagination from "@/components/shared/Pagination";
-import Loader from "@/components/shared/Loader";
+import LoadingContainer from "@/components/shared/LoadingContainer";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -60,7 +60,7 @@ export default function AdminPageContent() {
       </div>
 
       {loading ? (
-        <Loader text="Loading products..." />
+        <LoadingContainer text="Loading products..." />
       ) : (
         <>
           <AdminTable products={products} />

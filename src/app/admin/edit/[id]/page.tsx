@@ -51,8 +51,8 @@ export default async function EditProductPage({
         </div>
       </main>
     );
-  } catch (error) {
-    return (
+             } catch {
+             return (
       <div className="max-w-4xl mx-auto py-8 px-4">
         <Breadcrumb currentPage="Edit Product" isAdmin={true} />
         <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-red-600">

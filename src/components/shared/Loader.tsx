@@ -11,7 +11,7 @@ export default function Loader({ text = "Loading...", size = "md" }: LoaderProps
   };
 
   return (
-    <div className="flex flex-col justify-center items-center py-12 min-h-[200px]">
+    <div className="fixed inset-0 flex flex-col justify-center items-center bg-white bg-opacity-90 z-50">
       <div className="flex flex-col items-center">
         <div className={`${sizeClasses[size]} border-4 border-gray-200 border-t-amber-500 rounded-full animate-spin`}></div>
         {text && (
