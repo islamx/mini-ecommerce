@@ -33,6 +33,7 @@ export default function HomePageContent() {
   const [maxPrice, setMaxPrice] = useState(1000);
   const [filterLoading, setFilterLoading] = useState(false);
   const [productCount, setProductCount] = useState(0);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -97,8 +98,10 @@ export default function HomePageContent() {
         // Get product count
         const { total } = await getProductCount();
         setProductCount(total);
+        setDataLoaded(true);
       } catch (error) {
         console.error("Failed to fetch data:", error);
+        setDataLoaded(true);
       }
     };
     
@@ -108,6 +111,15 @@ export default function HomePageContent() {
   // Check if there are search/filter parameters
   const hasSearchParams = searchParams.get("name") || searchParams.get("category") || searchParams.get("minPrice") || searchParams.get("maxPrice");
   const searchQuery = searchParams.get("name");
+
+  // Show loader until all data is loaded
+  if (loading || !dataLoaded) {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 relative overflow-hidden flex items-center justify-center">
+        <LoadingContainer text="Loading products..." />
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 relative overflow-hidden">
@@ -153,9 +165,7 @@ export default function HomePageContent() {
            {/* Product Filter */}
            <ProductFilter categories={categories} maxPrice={maxPrice} isLoading={filterLoading} />
 
-            {loading ? (
-              <LoadingContainer text="Loading products..." />
-            ) : products.length === 0 && hasSearchParams ? (
+            {products.length === 0 && hasSearchParams ? (
               <EmptyState
                 title="No products found"
                 description={`We couldn't find any products matching "${searchQuery || 'your search criteria'}". Try adjusting your search terms or browse our full collection.`}
