@@ -34,7 +34,7 @@ export async function getProducts({
   if (maxPrice) params.set("maxPrice", maxPrice);
 
   const res = await fetch(
-    `http://localhost:3000/api/products?${params.toString()}`,
+    `/api/products?${params.toString()}`,
     {
       // 👇 admin = no caching
       ...(isAdmin ? { cache: "no-store" } : { next: { revalidate: 10 } }),

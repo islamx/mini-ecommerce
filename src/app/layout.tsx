@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"),
+  metadataBase: new URL(process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"),
   title: "Mini E-Commerce",
   description: "A modern mini e-commerce platform built with Next.js",
   keywords: ["e-commerce", "Next.js", "React", "TypeScript", "Tailwind CSS", "MongoDB", "fullstack"],

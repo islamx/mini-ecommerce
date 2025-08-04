@@ -81,7 +81,7 @@ export default function ProductForm({ type, initialValues }: ProductFormProps) {
       } else {
         toast.error(`Failed to ${type === "edit" ? "update" : "add"} product`);
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);

@@ -20,7 +20,7 @@ export default function ProductFilter({ search, onSearchChange }: ProductFilterP
       />
       {search && (
         <p className="mt-2 text-xs text-gray-500">
-          Showing results for: <span className="font-medium text-orange-600">"{search}"</span>
+          Showing results for: <span className="font-medium text-orange-600">&quot;{search}&quot;</span>
         </p>
       )}
     </div>

@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     const maxPrice = searchParams.get("maxPrice");
 
     // Build filter object
-    const filter: any = {};
+    const filter: Record<string, unknown> = {};
     
     if (name) {
       filter.title = { $regex: name, $options: "i" };
@@ -30,9 +30,10 @@ export async function GET(req: NextRequest) {
     }
     
     if (minPrice || maxPrice) {
-      filter.price = {};
-      if (minPrice) filter.price.$gte = parseFloat(minPrice);
-      if (maxPrice) filter.price.$lte = parseFloat(maxPrice);
+      const priceFilter: Record<string, number> = {};
+      if (minPrice) priceFilter.$gte = parseFloat(minPrice);
+      if (maxPrice) priceFilter.$lte = parseFloat(maxPrice);
+      filter.price = priceFilter;
     }
 
     const products = await Product.find(filter).sort({ id: 1 }).skip(skip).limit(limit);
@@ -46,7 +47,7 @@ export async function GET(req: NextRequest) {
         totalPages: Math.ceil(total / limit),
       },
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: "Server Error" }, { status: 500 });
   }
 }

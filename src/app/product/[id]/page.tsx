@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Product } from "@/types/Product";
-import Image from "next/image";
+
 import Loader from "@/components/shared/Loader";
 import Button from "@/components/forms/Button";
 import { useHandleAddToCart } from "@/lib/cartUtils";
@@ -11,7 +11,7 @@ import { notFound } from "next/navigation";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 
 async function getProduct(id: string): Promise<Product> {
-  const res = await fetch(`http://localhost:3000/api/products/${id}`, {
+  const res = await fetch(`/api/products/${id}`, {
     next: { revalidate: 10 },
   });
 

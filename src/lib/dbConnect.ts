@@ -6,7 +6,12 @@ if (!MONGODB_URI) {
   throw new Error("❌ MONGODB_URI is not defined.");
 }
 
-let cached = (global as any).mongoose || { conn: null, promise: null };
+interface Cached {
+  conn: unknown;
+  promise: unknown;
+}
+
+const cached: Cached = ((global as Record<string, unknown>).mongoose as Cached) || { conn: null, promise: null };
 
 export async function dbConnect() {
   if (cached.conn) return cached.conn;

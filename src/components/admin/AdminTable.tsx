@@ -24,7 +24,7 @@ export default function AdminTable({ products }: { products: Product[] }) {
       toast.success("Product deleted successfully");
       setData((prev) => prev.filter((p) => p.id !== selectedId));
       setSelectedId(null);
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete product");
     }
   };
